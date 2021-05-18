@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const findOrCreatePlugin = require("mongoose-findorcreate");
 
 const itemSchema = new mongoose.Schema({
   items: {
@@ -7,11 +8,11 @@ const itemSchema = new mongoose.Schema({
         pizza: [
           {
             name: {
-              String,
+              type: String,
               required: true,
             },
             description: {
-              String,
+              type: String,
               required: true,
             },
             price: {
@@ -28,11 +29,11 @@ const itemSchema = new mongoose.Schema({
         drink: [
           {
             name: {
-              String,
+              type: String,
               required: true,
             },
             description: {
-              String,
+              type: String,
               required: true,
             },
             price: Number,
@@ -45,11 +46,11 @@ const itemSchema = new mongoose.Schema({
         dessert: [
           {
             name: {
-              String,
+              type: String,
               required: true,
             },
             description: {
-              String,
+              type: String,
               required: true,
             },
             price: Number,
@@ -62,11 +63,11 @@ const itemSchema = new mongoose.Schema({
         appetizer: [
           {
             name: {
-              String,
+              type: String,
               required: true,
             },
             description: {
-              String,
+              type: String,
               required: true,
             },
             price: Number,
@@ -78,11 +79,11 @@ const itemSchema = new mongoose.Schema({
         miscellaneous: [
           {
             name: {
-              String,
+              type: String,
               required: true,
             },
             description: {
-              String,
+              type: String,
               required: true,
             },
             price: Number,
@@ -91,25 +92,27 @@ const itemSchema = new mongoose.Schema({
         ],
       },
     ],
-
-    promos: [
-      {
-        name: {
-          String,
-          required: true,
-        },
-        active: Boolean,
-
-        description: {
-          String,
-          required: true,
-        },
-        price: Number,
-        discount: Number,
-      },
-    ],
   },
+
+  promos: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      active: Boolean,
+
+      description: {
+        type: String,
+        required: true,
+      },
+      price: Number,
+      discount: Number,
+    },
+  ],
 });
+
+itemSchema.plugin(findOrCreatePlugin);
 
 const Item = new mongoose.model("item", itemSchema);
 

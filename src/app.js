@@ -75,6 +75,53 @@ mongoose.set("useCreateIndex", true);
 //   userTest.save().then((newUser) => console.log(newUser));
 // });
 
+Item.findOne({}, async (err, itemCollection) => {
+  const newPizzaTest = {
+    name: "myPizzaYolo",
+    description: "Deuxieme pizza test",
+    price: { small: 5, large: 25 },
+  };
+  if (err) {
+    console.log(err);
+  } else {
+    if (!itemCollection) {
+      const newItemCollection = new Item({
+        items: {
+          category: [{ pizza: [newPizzaTest] }],
+        },
+      });
+
+      newItemCollection.save();
+    } else {
+      const myArray = await itemCollection.items.category.find(
+        (category) => category.pizza
+      ).pizza;
+      myArray.forEach((pizza) => {
+        if (pizza.name === newPizzaTest.name) {
+          console.log("pizza is already existing");
+        } else {
+          itemCollection.items.category[0].pizza.push(newPizzaTest);
+          itemCollection.save();
+        }
+      });
+    }
+  }
+});
+
+// const pizzaTest = new Item({
+//   items: {
+//     category: {
+//       pizza: {
+//         name: "pizzaTest",
+//         description: "this is my pizzaTest",
+//         price: { large: 50 },
+//       },
+//     },
+//   },
+// });
+
+// pizzaTest.save();
+
 //*Passport initilization
 
 app.use(passport.initialize());
