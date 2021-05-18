@@ -13,7 +13,7 @@ const bcrypt = require("bcrypt");
 //Variables
 const app = express();
 const saltRounds = 10;
-const Menu = require("./models/item/itemsSchema");
+const Item = require("./models/item/itemsSchema");
 
 //App Configuration
 app.use(express.urlencoded({ extended: true }));
@@ -30,8 +30,8 @@ const User = require("./models/user/userSchema");
 passport.use(User.createStrategy());
 
 passport.use(
-  new LocalStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
+  new LocalStrategy(function (email, password, done) {
+    User.findOne({ email: email }, function (err, user) {
       if (err) {
         return done(err);
       }
@@ -80,7 +80,7 @@ mongoose.set("useCreateIndex", true);
 app.use(passport.initialize());
 app.use(passport.session());
 
-//!Routes
+//Routes
 
 require("./routes/routes")(app);
 
